@@ -1,4 +1,4 @@
-# 📁 Documentación de la Propuesta Técnica
+#  Documentación de la Propuesta Técnica
 
 Este directorio contiene los artefactos de diseño y la arquitectura de datos para el proyecto **QuizAI**, cumpliendo con los entregables de la propuesta inicial.
 
