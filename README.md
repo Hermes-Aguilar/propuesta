@@ -1,4 +1,4 @@
-# 🧠 QuizAI: Sistema Inteligente de Trivia
+#  QuizAI: Sistema Inteligente de Trivia
 
 > **Desarrollado con la API de Google Gemini**
 
@@ -6,11 +6,11 @@ Bienvenido a **QuizAI**, una plataforma dinámica que fusiona la potencia de la 
 
 ---
 
-## 🎯 El Concepto
+##  El Concepto
 
 A diferencia de los sistemas de trivia tradicionales, **QuizAI** no depende de una base de datos estática. El sistema "piensa" y genera contenido fresco sobre cualquier área de interés mediante modelos de lenguaje avanzados.
 
-### 🛠️ Flujo de Usuario
+###  Flujo de Usuario
 
 ```mermaid
 graph LR
@@ -24,10 +24,10 @@ graph LR
 
 ## 🔥 Características Principales
 
-  * **🤖 Generación Autónoma:** Integración nativa con la **API de Gemini** para crear bancos de preguntas únicos.
-  * **🔒 Seguridad:** Sistema de autenticación robusto para proteger los perfiles de usuario.
-  * **📊 Gestión de Datos (CRUD):** Control total sobre el inventario de preguntas, respuestas y métricas de usuario.
-  * **🏆 Sistema de Scoring:** Algoritmo de evaluación que calcula y almacena el rendimiento en tiempo real.
+  * ** Generación Autónoma:** Integración nativa con la **API de Gemini** para crear bancos de preguntas únicos.
+  * ** Seguridad:** Sistema de autenticación robusto para proteger los perfiles de usuario.
+  * ** Gestión de Datos (CRUD):** Control total sobre el inventario de preguntas, respuestas y métricas de usuario.
+  * ** Sistema de Scoring:** Algoritmo de evaluación que calcula y almacena el rendimiento en tiempo real.
 
 -----
 
@@ -37,7 +37,6 @@ API extraída de: Google AI Studio
 
 El sistema consume el modelo de Google (Gemini 1.5 Flash) para generar los datos que poblarán directamente nuestro modelo relacional.
 
-E
 
 ### Ejemplo de Prompting
 
@@ -63,7 +62,7 @@ E
 
 -----
 
-## 📁 Organización del Repositorio
+##  Organización del Repositorio
 
 | Carpeta | Contenido |
 | :--- | :--- |
@@ -73,7 +72,7 @@ E
 
 -----
 
-## 🚀 Instalación y Uso
+##  Instalación y Uso
 
 1.  **Clonar el repositorio:**
     ```bash
@@ -91,7 +90,7 @@ E
 
 -----
 
-## 👥 Colaboradores
+##  Colaboradores
 
   * **Aguilar Villa Hermes** - *Fullstack Developer* - [@HermesAv](https://github.com/Hermes-Aguilar)
   * **Herrera Machorro Guadalupe** - *QA, Testing & DB Admin* - [@GuadalupeHm](https://github.com/Guadalupe0405)
