@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+
+// ─── USUARIOS ────────────────────────────────────────────────────────────────
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  creadoEn  DateTime @default(now())
+
+  puntajes  Puntaje[]
+
+  @@map("usuarios")
+}
+
+// ─── PREGUNTAS ───────────────────────────────────────────────────────────────
+model Pregunta {
+  id         Int      @id @default(autoincrement())
+  enunciado  String
+  area       String
+  dificultad String   @default("media")
+  creadoEn   DateTime @default(now())
+
+  opciones  Opcion[]
+  puntajes  Puntaje[]
+
+  @@map("preguntas")
+}
+
+// ─── OPCIONES ────────────────────────────────────────────────────────────────
+model Opcion {
+  id         Int     @id @default(autoincrement())
+  texto      String
+  esCorrecta Boolean @default(false)
+  preguntaId Int
+
+  pregunta Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
+
+  @@map("opciones")
+}
+
+// ─── PUNTAJES ────────────────────────────────────────────────────────────────
+model Puntaje {
+  id         Int      @id @default(autoincrement())
+  puntos     Int
+  tema       String
+  totalPregs Int      @default(5)
+  correctas  Int
+  creadoEn   DateTime @default(now())
+  usuarioId  Int
+  preguntaId Int?
+
+  usuario  Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  pregunta Pregunta? @relation(fields: [preguntaId], references: [id])
+
+  @@map("puntajes")
+}
