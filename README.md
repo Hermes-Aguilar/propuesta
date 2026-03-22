@@ -31,7 +31,7 @@ graph LR
 
 -----
 
-## Documentación de la API (Gemini Integration)
+## Documentación de la API (Groq Integration)
 
 API extraída de: [Google AI Studio](https://console.groq.com/keys)
 
