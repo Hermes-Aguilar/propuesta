@@ -3,18 +3,52 @@ import { prisma } from "@/lib/prisma"
 
 export async function POST(req: NextRequest) {
   try {
-    const { usuarioId, puntos, tema, correctas, totalPregs } = await req.json()
+    const { usuarioId, puntos, tema, correctas, totalPregs, preguntas } = await req.json()
 
-    if (
-      usuarioId === undefined ||
-      puntos === undefined ||
-      !tema ||
-      correctas === undefined
-    ) {
+    if (usuarioId === undefined || puntos === undefined || !tema || correctas === undefined) {
       return NextResponse.json(
-        { error: "Faltan campos requeridos: usuarioId, puntos, tema, correctas" },
+        { error: "Faltan campos requeridos." },
         { status: 400 }
       )
+    }
+
+    // Guardar preguntas + opciones si vienen en el body
+    let preguntaId: number | undefined = undefined
+
+    if (preguntas && Array.isArray(preguntas) && preguntas.length > 0) {
+      // Crear la primera pregunta como "cabecera" del quiz y vincularla al puntaje
+      // Guardamos todas las preguntas del quiz
+      const primeraCreada = await prisma.pregunta.create({
+        data: {
+          enunciado: preguntas[0].question,
+          area: tema,
+          dificultad: "media",
+          opciones: {
+            create: preguntas[0].options.map((texto: string, i: number) => ({
+              texto,
+              esCorrecta: i === preguntas[0].correctAnswer,
+            })),
+          },
+        },
+      })
+      preguntaId = primeraCreada.id
+
+      // Guardar el resto de preguntas
+      for (let i = 1; i < preguntas.length; i++) {
+        await prisma.pregunta.create({
+          data: {
+            enunciado: preguntas[i].question,
+            area: tema,
+            dificultad: "media",
+            opciones: {
+              create: preguntas[i].options.map((texto: string, j: number) => ({
+                texto,
+                esCorrecta: j === preguntas[i].correctAnswer,
+              })),
+            },
+          },
+        })
+      }
     }
 
     const puntaje = await prisma.puntaje.create({
@@ -24,6 +58,7 @@ export async function POST(req: NextRequest) {
         tema: String(tema),
         correctas: Number(correctas),
         totalPregs: Number(totalPregs ?? 5),
+        preguntaId: preguntaId ?? null,
       },
     })
 
@@ -41,6 +76,28 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
     const usuarioId = searchParams.get("usuarioId")
+    const puntajeId = searchParams.get("puntajeId")
+
+    // Obtener preguntas de un puntaje específico
+    if (puntajeId) {
+      const puntaje = await prisma.puntaje.findUnique({
+        where: { id: Number(puntajeId) },
+      })
+
+      if (!puntaje?.preguntaId) {
+        return NextResponse.json({ preguntas: [] })
+      }
+
+      // Buscar todas las preguntas del mismo tema creadas cerca del mismo momento
+      const preguntas = await prisma.pregunta.findMany({
+        where: { area: puntaje.tema },
+        include: { opciones: true },
+        orderBy: { creadoEn: "asc" },
+        take: puntaje.totalPregs,
+      })
+
+      return NextResponse.json({ preguntas })
+    }
 
     if (!usuarioId) {
       return NextResponse.json(
@@ -52,7 +109,7 @@ export async function GET(req: NextRequest) {
     const puntajes = await prisma.puntaje.findMany({
       where: { usuarioId: Number(usuarioId) },
       orderBy: { creadoEn: "desc" },
-      take: 20, // Últimos 20 resultados
+      take: 20,
     })
 
     return NextResponse.json({ puntajes })

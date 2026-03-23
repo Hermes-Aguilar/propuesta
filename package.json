@@ -2,12 +2,14 @@
   "name": "my-project",
   "version": "0.1.0",
   "private": true,
-"scripts": {
-  "dev": "next dev",
-  "build": "prisma generate && next build",
-  "start": "next start",
-  "lint": "eslint ."
-},
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
     "@prisma/client": "^5.22.0",
